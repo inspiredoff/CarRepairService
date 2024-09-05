@@ -6,8 +6,6 @@ from model.src.models.entity import Entity
 
 @dataclass
 class Client(Entity):
-    id: int
-    number: str
     first_name: str
     family_name: str
     last_name: str

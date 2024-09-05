@@ -1,5 +1,9 @@
 from abc import ABC
+from dataclasses import dataclass
 
 
+@dataclass
 class Entity(ABC):
-    pass
+    id: int
+    number: str
+

@@ -8,11 +8,9 @@ from model.src.models.entity import Entity
 
 @dataclass
 class Car(Entity):
-    id: int
     brand: str
     model: str
     year: datetime
-    number: str
     client: Client = None
 
     def __post_init__(self):

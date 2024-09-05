@@ -15,7 +15,6 @@ class Client(Base):
     car_id: Mapped[int] = mapped_column(ForeignKey("Car.id"))
 
 
-
 class Car(Base):
     __tablename__ = "Client"
 
@@ -26,3 +25,12 @@ class Car(Base):
     number: Mapped[str]
     client_id: Mapped[int] = mapped_column(ForeignKey("Client.client_id"))
 
+
+class Repair(Base):
+    __tablename__ = "Repair"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    date: Mapped[int]
+    cost: Mapped[int]
+    client_id: Mapped[int] = mapped_column(ForeignKey("Client.client_id"))
+    car_id: Mapped[int] = mapped_column(ForeignKey("Car.id"))
