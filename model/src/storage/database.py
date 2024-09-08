@@ -9,5 +9,6 @@ from sqlalchemy.orm import DeclarativeBase
 async_engine = create_async_engine(url=dsn, echo=True)
 async_session_factory = async_sessionmaker(async_engine)
 
-class Base(AsyncAttrs, DeclarativeBase):
+
+class Base(DeclarativeBase):
     pass

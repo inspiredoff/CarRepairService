@@ -11,8 +11,8 @@ class AbstractBase:
     number: Mapped[str] = mapped_column(unique=True)
 
 
-class Client(AbstractBase):
-    __tablename__ = "Car"
+class ClientsTable(AbstractBase):
+    __tablename__ = "Client"
 
     first_name: Mapped[str]
     last_name: Mapped[str]
@@ -20,8 +20,8 @@ class Client(AbstractBase):
     car_id: Mapped[int] = mapped_column(ForeignKey("Car.id"))
 
 
-class Car(AbstractBase):
-    __tablename__ = "Client"
+class CarsTable(AbstractBase):
+    __tablename__ = "Cars"
 
     brand: Mapped[str]
     model: Mapped[str]
@@ -29,7 +29,7 @@ class Car(AbstractBase):
     client_id: Mapped[int] = mapped_column(ForeignKey("Client.client_id"))
 
 
-class Repair(AbstractBase):
+class RepairsTable(AbstractBase):
     __tablename__ = "Repair"
 
     date: Mapped[int]
