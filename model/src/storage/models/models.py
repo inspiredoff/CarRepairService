@@ -1,35 +1,37 @@
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.ext.declarative import declarative_base, as_declarative
 
 from model.src.storage.database import Base
 
 
-class Client(Base):
+@as_declarative()
+class AbstractBase:
+    id: Mapped[int] = mapped_column(autoincrement=True, primary_key=True)
+    number: Mapped[str] = mapped_column(unique=True)
+
+
+class Client(AbstractBase):
     __tablename__ = "Car"
 
-    client_id: Mapped[int] = mapped_column(primary_key=True)
     first_name: Mapped[str]
     last_name: Mapped[str]
     family_name: Mapped[str]
-    number_telephone: Mapped[str]
     car_id: Mapped[int] = mapped_column(ForeignKey("Car.id"))
 
 
-class Car(Base):
+class Car(AbstractBase):
     __tablename__ = "Client"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
     brand: Mapped[str]
     model: Mapped[str]
     year: Mapped[int]
-    number: Mapped[str]
     client_id: Mapped[int] = mapped_column(ForeignKey("Client.client_id"))
 
 
-class Repair(Base):
+class Repair(AbstractBase):
     __tablename__ = "Repair"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
     date: Mapped[int]
     cost: Mapped[int]
     client_id: Mapped[int] = mapped_column(ForeignKey("Client.client_id"))
