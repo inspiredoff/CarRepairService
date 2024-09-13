@@ -3,8 +3,8 @@ from sqlalchemy.ext.asyncio import async_session, async_sessionmaker, AsyncSessi
 
 from model.src.models.car.car import Car
 from model.src.models.entity import Entity
-from model.src.storage.models.models import CarsTable
-from model.src.storage.storage import Database, CarDatabase
+from model.src.repository.models.models import CarsTable
+from model.src.repository.storage import Database, CarDatabase
 
 
 class CarStorage(CarDatabase):

@@ -2,8 +2,8 @@ from sqlalchemy import select
 
 from model.src.models.Client.Client import Client
 from model.src.models.entity import Entity
-from model.src.storage.models.models import ClientsTable
-from model.src.storage.storage import Database, ClientDatabase
+from model.src.repository.models.models import ClientsTable
+from model.src.repository.storage import Database, ClientDatabase
 
 
 class ClientStorage(ClientDatabase):

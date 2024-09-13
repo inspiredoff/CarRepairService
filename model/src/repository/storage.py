@@ -5,7 +5,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
 
 from model.src.models.entity import Entity
-from model.src.storage.models.models import AbstractBase
+from model.src.repository.models.models import AbstractBase
 
 
 class Database(ABC):

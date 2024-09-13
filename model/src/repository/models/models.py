@@ -2,7 +2,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.ext.declarative import declarative_base, as_declarative
 
-from model.src.storage.database import Base
+from model.src.repository.database import Base
 
 
 @as_declarative()
@@ -11,7 +11,7 @@ class AbstractBase:
     number: Mapped[str] = mapped_column(unique=True)
 
 
-class ClientsTable(AbstractBase):
+class Client(AbstractBase):
     __tablename__ = "Client"
 
     first_name: Mapped[str]
@@ -20,7 +20,7 @@ class ClientsTable(AbstractBase):
     car_id: Mapped[int] = mapped_column(ForeignKey("Car.id"))
 
 
-class CarsTable(AbstractBase):
+class Car(AbstractBase):
     __tablename__ = "Cars"
 
     brand: Mapped[str]
@@ -29,7 +29,7 @@ class CarsTable(AbstractBase):
     client_id: Mapped[int] = mapped_column(ForeignKey("Client.client_id"))
 
 
-class RepairsTable(AbstractBase):
+class Repair(AbstractBase):
     __tablename__ = "Repair"
 
     date: Mapped[int]

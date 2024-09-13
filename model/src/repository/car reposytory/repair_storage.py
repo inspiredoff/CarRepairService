@@ -1,9 +1,9 @@
 from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
 
-from model.src.models.entity import Entity
-from model.src.models.repair.repair import Repair
-from model.src.storage.models.models import AbstractBase
-from model.src.storage.storage import RepairDatabase
+# from model.src.models.entity import Entity
+# from model.src.models.repair.repair import Repair
+from model.src.repository.models.models import AbstractBase
+from model.src.repository.storage import RepairDatabase
 
 
 class RepairStorage(RepairDatabase):
