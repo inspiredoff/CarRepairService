@@ -35,28 +35,32 @@ class Database(ABC):
 
 class CarDatabase(Database):
 
+    def __init__(self, base: AbstractBase, async_session: async_sessionmaker[AsyncSession]):
+        super().__init__(base, async_session)
+
     @abstractmethod
-    async def get_entity_by_brand(self):
+    async def get_entity_by_brand(self, brand: str) -> AbstractBase:
         pass
 
     @abstractmethod
-    async def get_entity_by_model(self):
+    async def get_entity_by_model(self, model: str) -> AbstractBase:
         pass
 
 
 class ClientDatabase(Database):
 
     @abstractmethod
-    async def get_entity_by_first_name(self):
+    async def get_entity_by_first_name(self, first_name: str) -> AbstractBase:
         pass
 
     @abstractmethod
-    async def get_entity_by_family_name(self):
+    async def get_entity_by_family_name(self, family_name: str) -> AbstractBase:
         pass
 
     @abstractmethod
-    async def get_entity_by_last_name(self):
+    async def get_entity_by_last_name(self, last_name: str) -> AbstractBase:
         pass
+
 
 class RepairDatabase(Database):
 

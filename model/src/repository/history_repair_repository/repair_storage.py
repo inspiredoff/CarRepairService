@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
 # from model.src.models.entity import Entity
 # from model.src.models.repair.repair import Repair
 from model.src.repository.models.models import AbstractBase
-from model.src.repository.storage import RepairDatabase
+from model.src.repository.repository import RepairDatabase
 
 
 class RepairStorage(RepairDatabase):
