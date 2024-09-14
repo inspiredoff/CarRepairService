@@ -8,7 +8,6 @@ from model.src.repository.database import Base
 @as_declarative()
 class AbstractBase:
     id: Mapped[int] = mapped_column(autoincrement=True, primary_key=True)
-    number: Mapped[str] = mapped_column(unique=True)
 
 
 class Client(AbstractBase):
@@ -20,19 +19,36 @@ class Client(AbstractBase):
     car_id: Mapped[int] = mapped_column(ForeignKey("Car.id"))
 
 
-class Car(AbstractBase):
-    __tablename__ = "Cars"
+class adresess(AbstractBase):
+    __tablename__ = "adresess"
 
-    brand: Mapped[str]
-    model: Mapped[str]
-    year: Mapped[int]
+    phone_number: Mapped[int]
     client_id: Mapped[int] = mapped_column(ForeignKey("Client.client_id"))
 
 
-class Repair(AbstractBase):
-    __tablename__ = "Repair"
+class Car(AbstractBase):
+    __tablename__ = "Cars"
+
+    make: Mapped[str]
+    model: Mapped[str]
+    year: Mapped[int]
+    sts_number: Mapped[int]
+    client_id: Mapped[int] = mapped_column(ForeignKey("Client.client_id"))
+
+
+class HistoryCarRepair(AbstractBase):
+    __tablename__ = "HistoryCarRepair"
 
     date: Mapped[int]
     cost: Mapped[int]
     client_id: Mapped[int] = mapped_column(ForeignKey("Client.client_id"))
     car_id: Mapped[int] = mapped_column(ForeignKey("Car.id"))
+
+
+class SupportCar(AbstractBase):
+    __tablename__ = "SupportCar"
+
+    make: Mapped[str]
+    model: Mapped[str]
+    year: Mapped[int]
+
