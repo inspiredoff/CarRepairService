@@ -5,7 +5,7 @@ from model.src.repository.client_repository.client_repository import ClientRepos
 from model.src.repository.models.models import Client, Car
 
 
-class Service:
+class Services:
 
     def __init__(self):
         async_engine = create_async_engine(url=dsn, echo=True)
