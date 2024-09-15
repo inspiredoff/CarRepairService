@@ -1,14 +1,14 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import async_session, async_sessionmaker, AsyncSession
 
-from model.src.repository.models.models import Car, AbstractBase, AbcCar
+from model.src.repository.models.models import Car, AbstractBase
 # from model.src.models.car.car import Car
 # from model.src.models.entity import Entity
 # from model.src.repository.models.models import CarsTable
-from model.src.repository.repository import Database, CarDatabase
+from model.src.repository.repository import OriginRepository, CarOriginRepository
 
 
-class CarRepository(CarDatabase):
+class CarRepository(CarOriginRepository):
     entity = AbcCar()
 
     def __init__(self, entity: AbcCar(), async_sessionmaker: async_session):
@@ -26,11 +26,12 @@ class CarRepository(CarDatabase):
     async def get_entity_by_id(self, id: int) -> entity:
         return await super().get_entity_by_id(id)
 
-    # async def get_entity_by_number(self, number: str) -> Car:
-    #     return await super().get_entity_by_number(number)
+    async def get_entity_by_number(self, number: str) -> Car:
+        query = select(self.entity).where(self.entity.number == number)
+        return await super()._extract_query(query, lambda result: result.one())
 
     async def get_all_entities(self) -> list[entity]:
         return await super().get_all_entities()
 
-    async def add_entity(self, entity: entity):
+    async def add_entity(self, entity: entity, phone_number: Adresess):
         return await super().add_entity(entity)

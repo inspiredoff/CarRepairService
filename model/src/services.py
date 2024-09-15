@@ -35,6 +35,13 @@ class Services:
         client = await self.client_repository.get_entity_by_last_name(last_name)
         print(client)
 
+    async def add_client(self, first_name: str, family_name: str, last_name: str) -> None:
+        client = Client()
+        client.first_name = first_name
+        client.family_name = family_name
+        client.last_name = last_name
+        await self.client_repository.add_entity(client)
+
     #Car
 
     async def get_all_car(self):
@@ -52,6 +59,14 @@ class Services:
     async def get_car_by_model(self, model: str):
         car = await self.car_repository.get_entity_by_model(model)
         print(car)
+
+    async def add_car(self, brand: str, model: str, year: int, number: str) -> None:
+        car = Car()
+        car.brand = brand
+        car.model = model
+        car.year = year
+        car.number = number
+        await self.car_repository.add_entity(car)
 
     #Repair
 

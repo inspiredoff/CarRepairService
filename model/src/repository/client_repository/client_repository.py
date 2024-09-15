@@ -4,11 +4,11 @@ from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
 #
 # from model.src.models.Client.Client import Client
 # from model.src.models.entity import Entity
-from model.src.repository.models.models import Client, AbstractBase
-from model.src.repository.repository import Database, ClientDatabase
+from model.src.repository.models.models import Client, AbstractBase, Car, AbcCar, Addressees
+from model.src.repository.repository import OriginRepository, ClientOriginRepository
 
 
-class ClientRepository(ClientDatabase):
+class ClientRepository(ClientOriginRepository):
 
     def __init__(self, entity: Client(), async_session: async_sessionmaker[AsyncSession]):
         super().__init__(entity, async_session)
@@ -22,20 +22,27 @@ class ClientRepository(ClientDatabase):
     # async def get_entity_by_number(self, number: str) -> Client:
     #     return await super().get_entity_by_number(number)
 
-    async def get_all_entities(self):
+    async def get_all_entities(self) -> list[Client]:
         return await super().get_all_entities()
 
     async def get_entity_by_first_name(self, first_name: str):
         query = select(self.entity).where(self.entity.first_name == first_name)
         return await super()._extract_query(query, lambda result: result.one())
 
-    async def get_entity_by_family_name(self, family_name: str) -> AbstractBase:
+    async def get_entity_by_family_name(self, family_name: str) -> Client:
         query = select(self.entity).where(self.entity.family_name == family_name)
         return await super()._extract_query(query, lambda result: result.one())
 
-    async def get_entity_by_last_name(self, last_name: str) -> AbstractBase:
+    async def get_entity_by_last_name(self, last_name: str) -> Client:
         query = select(self.entity).where(self.entity.last_name == last_name)
         return await super()._extract_query(query, lambda result: result.one())
 
-    async def add_entity(self):
-        pass
+    async def get_car_by_client_id(self, client_id: int) -> list[Car]:
+        query = select(Client)
+
+    async def add_entity(self, entity: Client, number: Addressees):
+        async with self.async_session() as session:
+            session.add(entity)
+            session.add(number)
+            await session.commit()
+

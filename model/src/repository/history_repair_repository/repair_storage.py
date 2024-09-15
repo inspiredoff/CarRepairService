@@ -3,13 +3,13 @@ from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
 # from model.src.models.entity import Entity
 # from model.src.models.repair.repair import Repair
 from model.src.repository.models.models import AbstractBase
-from model.src.repository.repository import RepairDatabase
+from model.src.repository.repository import RepairOriginRepository
 
 
-class RepairStorage(RepairDatabase):
+class RepairStorage(RepairOriginRepository):
 
     def __init__(self,
-                 base: RepairDatabase,
+                 base: RepairOriginRepository,
                  async_session: async_sessionmaker[AsyncSession]):
         super().__init__(base, async_session)
 

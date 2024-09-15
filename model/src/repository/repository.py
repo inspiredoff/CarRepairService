@@ -5,10 +5,10 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
 
 # from model.src.models.entity import Entity
-from model.src.repository.models.models import AbstractBase
+from model.src.repository.models.models import AbstractBase, Car, Addressees, SupportCar
 
 
-class Database(ABC):
+class OriginRepository(ABC):
 
     def __init__(self, base: AbstractBase, async_session: async_sessionmaker[AsyncSession]):
         self.base = base
@@ -27,27 +27,26 @@ class Database(ABC):
         query = select(self.base)
         return await self._extract_query(query, lambda result: result.all())
 
-    async def add_entity(self, entity: AbstractBase) -> None:
-        async with self.async_session() as session:
-            session.add(entity)
-            await session.commit()
 
-
-class CarDatabase(Database):
+class CarOriginRepository(OriginRepository):
 
     def __init__(self, base: AbstractBase, async_session: async_sessionmaker[AsyncSession]):
         super().__init__(base, async_session)
 
     @abstractmethod
-    async def get_entity_by_brand(self, brand: str) -> AbstractBase:
+    async def get_entity_by_brand(self, brand: str) -> Car:
         pass
 
     @abstractmethod
-    async def get_entity_by_model(self, model: str) -> AbstractBase:
+    async def get_entity_by_model(self, model: str) -> Car:
+        pass
+
+    @abstractmethod
+    async def add_entity(self, client_id: int, number: Addressees) -> None:
         pass
 
 
-class ClientDatabase(Database):
+class ClientOriginRepository(OriginRepository):
 
     @abstractmethod
     async def get_entity_by_first_name(self, first_name: str) -> AbstractBase:
@@ -61,8 +60,12 @@ class ClientDatabase(Database):
     async def get_entity_by_last_name(self, last_name: str) -> AbstractBase:
         pass
 
+    @abstractmethod
+    async def add_entity(self, client: AbstractBase, number: AbstractBase) -> None:
+        pass
 
-class RepairDatabase(Database):
+
+class RepairOriginRepository(OriginRepository):
 
     @abstractmethod
     async def get_entity_by_client_id(self):
@@ -78,4 +81,23 @@ class RepairDatabase(Database):
 
     @abstractmethod
     async def get_entity_by_status(self):
+        pass
+
+
+class CarsModelDatabase(ABC):
+
+    @abstractmethod
+    async def get_brands_by_id(self) -> list[SupportCar.make]:
+        pass
+
+    @abstractmethod
+    async def get_model_by_id(self) -> list[SupportCar.model]:
+        pass
+
+    @abstractmethod
+    async def get_model_by_brand_name(self) -> SupportCar.make:
+        pass
+
+    @abstractmethod
+    async def get_model_by_brand_id(self) -> SupportCar.model:
         pass
