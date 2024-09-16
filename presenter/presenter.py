@@ -24,6 +24,9 @@ class Presenter:
     async def get_client_by_last_name(self, last_name: str):
         await self.__services.get_client_by_last_name(last_name)
 
+    async def add_client(self, first_name: str, family_name: str, last_name: str, phone_number: int) -> None:
+        await self.__services.add_client(first_name, family_name, last_name, phone_number)
+
     # Car
     async def get_all_car(self):
         await self.__services.get_all_car()
@@ -36,6 +39,9 @@ class Presenter:
 
     async def get_car_by_model(self, model: str):
         await self.__services.get_car_by_model(model)
+
+    async def add_car(self, brand: str, model: str, year: int, number: str) -> None:
+        await self.__services.add_car(brand, model, year, number)
 
     # Repair
     async def get_all_repair(self):
@@ -71,3 +77,10 @@ class Presenter:
 
     async def get_make_by_name(self, make_name: str):
         await self.__services.get_make_by_name(make_name)
+
+    async def get_all_model(self):
+        await self.__services.get_all_models()
+
+    async def get_all_make(self):
+        await self.__services.get_all_make()
+

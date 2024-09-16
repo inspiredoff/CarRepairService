@@ -76,3 +76,5 @@ class ConsoleUI(View):
     async def get_repair_by_status(self):
         state = input("input status repair car")
         await self.presenter.get_repair_by_status(state)
+
+
