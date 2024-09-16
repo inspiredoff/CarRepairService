@@ -69,7 +69,7 @@ class Services:
         car = await self.car_repository.get_entity_by_id(id)
         print(car)
 
-    async def get_car_by_brand(self, brand: str):
+    async def get_car_by_make(self, brand: str):
         car = await self.car_repository.get_entity_by_make(brand)
         print(car)
 

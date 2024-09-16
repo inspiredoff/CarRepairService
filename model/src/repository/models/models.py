@@ -1,8 +1,7 @@
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy.ext.declarative import declarative_base, as_declarative
+from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.ext.declarative import as_declarative
 
-from model.src.repository.database import Base
 
 
 @as_declarative()
