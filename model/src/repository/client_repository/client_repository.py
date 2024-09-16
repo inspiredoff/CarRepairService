@@ -4,13 +4,13 @@ from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
 #
 # from model.src.models.Client.Client import Client
 # from model.src.models.entity import Entity
-from model.src.repository.models.models import Client, AbstractBase, Car, AbcCar, Addressees
-from model.src.repository.repository import OriginRepository, ClientOriginRepository
+from model.src.repository.models.models import Client, Car, Addressees
+from model.src.repository.repository import ClientOriginRepository
 
 
 class ClientRepository(ClientOriginRepository):
 
-    def __init__(self, entity: Client(), async_session: async_sessionmaker[AsyncSession]):
+    def __init__(self, entity: Client, async_session: async_sessionmaker[AsyncSession]):
         super().__init__(entity, async_session)
         self.entity = entity
 
@@ -25,7 +25,7 @@ class ClientRepository(ClientOriginRepository):
     async def get_all_entities(self) -> list[Client]:
         return await super().get_all_entities()
 
-    async def get_entity_by_first_name(self, first_name: str):
+    async def get_entity_by_first_name(self, first_name: str) -> Client:
         query = select(self.entity).where(self.entity.first_name == first_name)
         return await super()._extract_query(query, lambda result: result.one())
 
@@ -37,8 +37,9 @@ class ClientRepository(ClientOriginRepository):
         query = select(self.entity).where(self.entity.last_name == last_name)
         return await super()._extract_query(query, lambda result: result.one())
 
-    async def get_car_by_client_id(self, client_id: int) -> list[Car]:
-        query = select(Client)
+    async def get_car_by_client_id(self, client_id: int) -> list[int]:
+        query = select(Client.car_id).where(Client.id == client_id)
+        return await super()._extract_query(query, lambda result: result.all())
 
     async def add_entity(self, entity: Client, number: Addressees):
         async with self.async_session() as session:

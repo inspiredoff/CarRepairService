@@ -31,15 +31,16 @@ class Car(AbstractBase):
     make: Mapped[str]
     model: Mapped[str]
     year: Mapped[int]
-    sts_number: Mapped[int]
+    sts_number: Mapped[str]
     client_id: Mapped[int] = mapped_column(ForeignKey("Client.client_id"))
 
 
 class HistoryCarRepair(AbstractBase):
     __tablename__ = "HistoryCarRepair"
 
-    date: Mapped[int]
+    date: Mapped[str]
     cost: Mapped[int]
+    state: Mapped[str]
     client_id: Mapped[int] = mapped_column(ForeignKey("Client.client_id"))
     car_id: Mapped[int] = mapped_column(ForeignKey("Car.id"))
 
