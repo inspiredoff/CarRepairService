@@ -9,7 +9,7 @@ class AbstractBase:
     id: Mapped[int] = mapped_column(autoincrement=True, primary_key=True)
 
 
-class Client(AbstractBase):
+class ClientTable(AbstractBase):
     __tablename__ = "Client"
 
     first_name: Mapped[str]
@@ -19,13 +19,13 @@ class Client(AbstractBase):
     car_id: Mapped[int] = mapped_column(ForeignKey("Car.id"))
 
 
-class Addressees(AbstractBase):
+class AddresseesTable(AbstractBase):
     __tablename__ = "Addressees"
 
     phone_number: Mapped[int]
 
 
-class Car(AbstractBase):
+class CarsTable(AbstractBase):
     __tablename__ = "Cars"
     make: Mapped[str]
     model: Mapped[str]
@@ -34,7 +34,7 @@ class Car(AbstractBase):
     client_id: Mapped[int] = mapped_column(ForeignKey("Client.client_id"))
 
 
-class HistoryCarRepair(AbstractBase):
+class HistoryCarRepairTable(AbstractBase):
     __tablename__ = "HistoryCarRepair"
 
     date: Mapped[str]
@@ -44,7 +44,7 @@ class HistoryCarRepair(AbstractBase):
     car_id: Mapped[int] = mapped_column(ForeignKey("Car.id"))
 
 
-class SupportCar(AbstractBase):
+class SupportCarTable(AbstractBase):
     __tablename__ = "SupportCar"
 
     make: Mapped[str]

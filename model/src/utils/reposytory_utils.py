@@ -1,6 +1,9 @@
+from typing import List
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
+from model.src.model.models import OriginEntity
 from model.src.repository.models.models import AbstractBase
 
 
@@ -14,11 +17,11 @@ class RepositoryUtils:
             res = await session.execute(query)
         return extract_method(res.scalars())
 
-    async def add_entity(self, entities: list[AbstractBase]) -> list[dict[str, int]]:
+    async def add_entity(self, entities: list[OriginEntity]) -> list[int]:
         list_ids = []
         async with self.__async_session() as session:
-            for i in entities:
-                session.add(i)
-                list_ids.append({type(i): i.id})
+            for entity in entities:
+                session.add(entity)
+                list_ids.append(entity.id)
             await session.commit()
         return list_ids

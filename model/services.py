@@ -4,9 +4,13 @@ from sqlalchemy.ext.asyncio import create_async_engine
 
 from model.src.repository.car_repository.car_repository import CarRepository
 from model.src.repository.client_repository.client_repository import ClientRepository
-from model.src.repository.models.models import Addressees
-from model.src.repository.models.models import Car
-from model.src.repository.models.models import Client
+from model.src.model.models import (
+    Car,
+    Client,
+    HistoryCarRepair,
+    SupportCar, Addressees
+
+)
 from model.src.repository.repository import CarOriginRepository
 from model.src.repository.repository import CarsModelDatabase
 from model.src.repository.repository import ClientOriginRepository
@@ -55,9 +59,9 @@ class Services:
         client.first_name = first_name
         client.family_name = family_name
         client.last_name = last_name
-        addrees = Addressees()
-        addrees.phone_number = phone_number
-        await self.client_repository.add_entity(client, addrees)
+        address = Addressees()
+        address.phone_number = phone_number
+        await self.client_repository.add_entity(client, address)
 
     # Car
 
@@ -78,11 +82,7 @@ class Services:
         print(car)
 
     async def add_car(self, brand: str, model: str, year: int, number: str) -> None:
-        car = Car()
-        car.make = brand
-        car.model = model
-        car.year = year
-        car.sts_number = number
+        car = Car(make=brand, model=model, year=year, sts_number=number)
         await self.car_repository.add_entity(car)
 
     # Repair

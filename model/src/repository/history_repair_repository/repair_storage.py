@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import async_sessionmaker
 # from model.src.models.entity import Entity
 # from model.src.models.repair.repair import Repair
 from model.src.repository.models.models import AbstractBase
-from model.src.repository.models.models import HistoryCarRepair
+from model.src.model.models import HistoryCarRepair
 from model.src.repository.repository import RepairOriginRepository
 from model.src.utils.reposytory_utils import RepositoryUtils
 

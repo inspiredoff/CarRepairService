@@ -8,28 +8,32 @@ from sqlalchemy.ext.asyncio import async_sessionmaker
 
 # from model.src.models.entity import Entity
 from model.src.repository.models.models import AbstractBase
-from model.src.repository.models.models import Addressees
-from model.src.repository.models.models import Car
-from model.src.repository.models.models import SupportCar
+from model.src.model.models import (
+    OriginEntity,
+    OriginEntityCar,
+    OriginEntityClient,
+    OriginEntityHistoryRepair,
+    OriginEntitySupportCar,
+    OriginEntityAddressees)
 
 
 class OriginRepository(ABC):
 
     def __init__(self, entity: AbstractBase, async_session: async_sessionmaker[AsyncSession]):
-        self.entity = entity
-        self.async_session = async_session
+        self.__entity = entity
+        self.__async_session = async_session
 
     async def _extract_query(self, query, extract_method):
-        async with self.async_session() as session:
+        async with self.__async_session() as session:
             res = await session.execute(query)
         return extract_method(res.scalars())
 
-    async def get_entity_by_id(self, id: int) -> AbstractBase:
-        query = select(self.entity).where(self.entity.id == id)
+    async def get_entity_by_id(self, id: int) -> OriginEntity:
+        query = select(self.__entity).where(self.__entity.id == id)
         return await self._extract_query(query, lambda result: result.one())
 
-    async def get_all_entities(self) -> list[AbstractBase]:
-        query = select(self.entity)
+    async def get_all_entities(self) -> list[OriginEntity]:
+        query = select(self.__entity)
         return await self._extract_query(query, lambda result: result.all())
 
 
@@ -39,61 +43,61 @@ class CarOriginRepository(OriginRepository):
     #     super().__init__(base, async_session)
 
     @abstractmethod
-    async def get_entity_by_make(self, make: str) -> AbstractBase:
+    async def get_entity_by_make(self, make: str) -> OriginEntitySupportCar:
         pass
 
     @abstractmethod
-    async def get_entity_by_model(self, model: str) -> AbstractBase:
+    async def get_entity_by_model(self, model: str) -> OriginEntitySupportCar:
         pass
 
     @abstractmethod
-    async def get_entity_by_id(self, id: int) -> AbstractBase:
+    async def get_entity_by_id(self, id: int) -> OriginEntitySupportCar:
         pass
 
     @abstractmethod
-    async def get_entity_by_number(self, number: str) -> AbstractBase:
+    async def get_entity_by_number(self, number: str) -> OriginEntitySupportCar:
         pass
 
     @abstractmethod
-    async def add_entity(self, car: Car) -> None:
+    async def add_entity(self, car: OriginEntityCar, address: OriginEntityAddressees) -> None:
         pass
 
 
 class ClientOriginRepository(OriginRepository):
 
     @abstractmethod
-    async def get_entity_by_first_name(self, first_name: str) -> AbstractBase:
+    async def get_entity_by_first_name(self, first_name: str) -> OriginEntityClient:
         pass
 
     @abstractmethod
-    async def get_entity_by_family_name(self, family_name: str) -> AbstractBase:
+    async def get_entity_by_family_name(self, family_name: str) -> OriginEntityClient:
         pass
 
     @abstractmethod
-    async def get_entity_by_last_name(self, last_name: str) -> AbstractBase:
+    async def get_entity_by_last_name(self, last_name: str) -> OriginEntityClient:
         pass
 
     @abstractmethod
-    async def add_entity(self, client: AbstractBase, number: AbstractBase) -> None:
+    async def add_entity(self, client: OriginEntityClient, address: Or) -> None:
         pass
 
 
 class RepairOriginRepository(OriginRepository):
 
     @abstractmethod
-    async def get_entity_by_client_id(self, client_id: int):
+    async def get_entity_by_client_id(self, client_id: int) -> OriginEntityHistoryRepair:
         pass
 
     @abstractmethod
-    async def get_entity_by_car_id(self, car_id):
+    async def get_entity_by_car_id(self, car_id) -> OriginEntityHistoryRepair:
         pass
 
     @abstractmethod
-    async def get_entity_by_date(self, date: str):
+    async def get_entity_by_date(self, date: str) -> OriginEntityHistoryRepair:
         pass
 
     @abstractmethod
-    async def get_entity_by_status(self, state: str):
+    async def get_entity_by_status(self, state: str) -> OriginEntityHistoryRepair:
         pass
 
     @abstractmethod
@@ -104,29 +108,29 @@ class RepairOriginRepository(OriginRepository):
 class CarsModelDatabase(ABC):
 
     @abstractmethod
-    async def get_make_by_id(self, make_id: int) -> str:
+    async def get_make_by_id(self, make_id: int) -> OriginEntitySupportCar.make:
         pass
 
     @abstractmethod
-    async def get_model_by_id(self, model_id: int) -> str:
+    async def get_model_by_id(self, model_id: int) -> OriginEntitySupportCar.model:
         pass
 
     @abstractmethod
-    async def get_model_by_make_name(self, make: str) -> list[str]:
+    async def get_model_by_make_name(self, make: str) -> list[OriginEntitySupportCar.model]:
         pass
 
     @abstractmethod
-    async def get_model_by_make_id(self, make_id: int) -> list[str]:
+    async def get_model_by_make_id(self, make_id: int) -> list[OriginEntitySupportCar.make]:
         pass
 
     @abstractmethod
-    async def get_all_make(self) -> list[str]:
+    async def get_all_make(self) -> list[OriginEntitySupportCar.make]:
         pass
 
     @abstractmethod
-    async def get_all_model(self) -> list[str]:
+    async def get_all_model(self) -> list[OriginEntitySupportCar.model]:
         pass
 
     @abstractmethod
-    async def get_make_by_name(self, make_name) -> str:
+    async def get_make_by_name(self, make_name) -> OriginEntitySupportCar.make:
         pass
