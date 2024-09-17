@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
 # from model.src.models.entity import Entity
-from model.src.repository.models.models import AbstractBase, ClientTable, AddresseesTable
+from model.src.repository.models.models import AbstractBase, ClientTable, AddresseesTable, CarsTable
 from model.src.model.models import (
     OriginEntity,
     OriginEntityCar,
@@ -43,23 +43,23 @@ class CarOriginRepository(OriginRepository):
     #     super().__init__(base, async_session)
 
     @abstractmethod
-    async def get_entity_by_make(self, make: str) -> OriginEntitySupportCar:
+    async def get_entitis_by_make(self, make: str) -> list[CarsTable]:
         pass
 
     @abstractmethod
-    async def get_entity_by_model(self, model: str) -> OriginEntitySupportCar:
+    async def get_entitis_by_model(self, model: str) -> list[CarsTable]:
         pass
 
     @abstractmethod
-    async def get_entity_by_id(self, id: int) -> OriginEntitySupportCar:
+    async def get_entity_by_id(self, id: int) -> CarsTable:
         pass
 
     @abstractmethod
-    async def get_entity_by_number(self, number: str) -> OriginEntitySupportCar:
+    async def get_entity_by_number(self, number: str) -> CarsTable:
         pass
 
     @abstractmethod
-    async def add_entity(self, car: OriginEntityCar, address: OriginEntityAddressees) -> None:
+    async def add_entity(self, car: CarsTable) -> None:
         pass
 
 

@@ -85,28 +85,39 @@ class Services:
 
     # Car
 
-    async def get_all_car(self):
-        cars = await self.car_repository.get_all_entities()
-        print(cars)
+    async def get_all_cars(self):
+        list_cars = await self.car_repository.get_all_entities()
+        print(list_cars)
 
     async def get_car_by_id(self, id: int):
         car = await self.car_repository.get_entity_by_id(id)
         print(car)
 
-    async def get_car_by_make(self, brand: str):
-        car = await self.car_repository.get_entity_by_make(brand)
-        print(car)
+    async def get_cars_by_make(self, brand: str):
+        list_car = await self.car_repository.get_entitis_by_make(brand)
+        print(list_car)
 
-    async def get_car_by_model(self, model: str):
-        car = await self.car_repository.get_entity_by_model(model)
-        print(car)
+    async def get_cars_by_model(self, model: str):
+        list_car = await self.car_repository.get_entitis_by_model(model)
+        print(list_car)
 
-    async def add_car(self, brand: str, model: str, year: int, number: str) -> None:
-        car = Car(make=brand, model=model, year=year, sts_number=number)
+    async def add_car(self, make: str, model: str, year: int, sts_number: str) -> None:
+        car = CarsTable()
+        car.make = make
+        car.model = model
+        car.year = year
+        car.sts_number = sts_number
         await self.car_repository.add_entity(car)
+        car_model = Car(
+            make=car.make,
+            model=Car.model,
+            year=car.year,
+            sts_number=car.sts_number,
+            id=car.id)
+        await OutputUtils.print_entity_ms(car_model)
+
 
     # Repair
-
     async def get_all_repair(self):
         await self.history_repair.get_all_entities()
 

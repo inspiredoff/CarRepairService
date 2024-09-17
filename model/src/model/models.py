@@ -1,32 +1,29 @@
 from abc import ABC
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, MISSING
 
 
 @dataclass
 class OriginEntity(ABC):
-    __id: int|None  = None
+    __id: int | None = None
 
 
-@dataclass
 class OriginEntityAddressees(OriginEntity, ABC):
     __phone_number: int
 
-@dataclass
-class OriginEntityClient(OriginEntity, ABC):
-    __first_name: str
-    __last_name: str|None
-    __family_name: str|None
-    __adressees: OriginEntityAddressees
-    __car: list[OriginEntity] = field(default_factory=list)
 
-@dataclass
 class OriginEntityCar(OriginEntity, ABC):
     __make: str
     __model: str
     __year: int
     __sts_number: str
-    __client: OriginEntityClient
 
+
+class OriginEntityClient(OriginEntity, ABC):
+    __first_name: str
+    __last_name: str | None
+    __family_name: str | None
+    __adressees: OriginEntityAddressees
+    __car: list[OriginEntity] = field(default_factory=list)
 
 
 class OriginEntityHistoryRepair(OriginEntity, ABC):
@@ -45,7 +42,8 @@ class OriginEntitySupportCar(OriginEntity, ABC):
 
 class Car(OriginEntityCar):
 
-    def __init__(self,make:str, model:str, year:int, sts_number:str, client:OriginEntityClient, id:int|None = None):
+    def __init__(self, make: str, model: str, year: int, sts_number: str, client: OriginEntityClient,
+                 id: int | None = None):
         super().__init__(id, make, model, year, sts_number, client)
 
     @property
@@ -91,7 +89,7 @@ class Car(OriginEntityCar):
 
 class Addressees(OriginEntityAddressees):
 
-    def __init__(self,phone_number, id = None):
+    def __init__(self, phone_number, id=None):
         super().__init__(id, phone_number)
 
     @property
@@ -116,16 +114,16 @@ class Client(OriginEntityClient):
     def __init__(self,
                  first_name: str,
                  addressees: OriginEntityAddressees,
-                 id:int|None = None,
-                 family_name:str|None=None,
-                 last_name:str|None=None,
+                 id: int | None = None,
+                 family_name: str | None = None,
+                 last_name: str | None = None,
                  ):
-
-        super().__init__(id, first_name, last_name,  family_name, addressees)
+        super().__init__(id, first_name, last_name, family_name, addressees)
 
     @property
     async def id(self):
         return self.__id
+
     @property
     async def first_name(self):
         return self.__first_name
@@ -174,13 +172,7 @@ class Client(OriginEntityClient):
 class HistoryCarRepair(OriginEntityHistoryRepair):
 
     def __init__(self, date=None, cost=None, state=None, client_id=None, car_id=None):
-        super().__init__()
-        self.__id = id
-        self.__date = date
-        self.__cost = cost
-        self.__state = state
-        self.__client_id = client_id
-        self.__car_id = car_id
+        super().__init__(id, date, cost, state, client_id, car_id)
 
     @property
     async def date(self):

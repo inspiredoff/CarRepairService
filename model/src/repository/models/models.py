@@ -31,7 +31,6 @@ class CarsTable(AbstractBase):
     model: Mapped[str]
     year: Mapped[int]
     sts_number: Mapped[str]
-    client_id: Mapped[int] = mapped_column(ForeignKey("Client.client_id"))
 
 
 class HistoryCarRepairTable(AbstractBase):
