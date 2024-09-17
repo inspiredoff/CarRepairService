@@ -43,7 +43,7 @@ class OriginEntitySupportCar(OriginEntity, ABC):
 class Car(OriginEntityCar):
 
     def __init__(self,id, make, model, year, sts_number, client_id):
-        super().__init__()
+        super().__init__(id)
         self.__id = id
         self.__make = make
         self.__model = model
@@ -94,8 +94,8 @@ class Car(OriginEntityCar):
 
 class Addressees(OriginEntityAddressees):
 
-    def __init__(self, phone_number):
-        super().__init__()
+    def __init__(self, id,phone_number):
+        super().__init__(id)
         self.__id = id
         self.__phone_number = phone_number
 
@@ -110,8 +110,8 @@ class Addressees(OriginEntityAddressees):
 
 class Client(OriginEntityClient):
 
-    def __init__(self, phone_number_id=None, first_name=None, family_name=None, last_name=None):
-        super().__init__()
+    def __init__(self, id, phone_number_id=None, first_name=None, family_name=None, last_name=None):
+        super().__init__(id)
         self.__id = id
         self.__phone_number_id = phone_number_id
         self.__first_name = first_name

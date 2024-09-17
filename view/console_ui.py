@@ -9,7 +9,7 @@ class ConsoleUI(View):
         self.presenter = Presenter(self)
 
     async def print_answer(self, text: str):
-        pass
+        print(text)
 
     async def start(self):
         pass
@@ -36,21 +36,37 @@ class ConsoleUI(View):
         name = input("input last_name")
         await self.presenter.get_client_by_last_name(name)
 
+    async def input_client(self):
+        first_name = input("input client first name")
+        family_name = input("input client family name")
+        last_name = input("input client first name")
+        phone_number = int(input("input phone number"))
+        await self.presenter.add_client(first_name, last_name, family_name, phone_number)
+
+
     # Car
     async def get_all_car(self):
         await self.presenter.get_all_car()
 
-    async def get_car_by_id(self, id: int):
+    async def get_car_by_id(self):
         id = int(input("input car id"))
         await self.presenter.get_car_by_id(id)
 
-    async def get_car_by_make(self):
+    async def get_cars_by_make(self):
         make = input("input make name")
         await self.presenter.get_car_by_make(make)
 
-    async def get_car_by_model(self, model: str):
+    async def get_cars_by_model(self):
         model = input("input model name")
         await self.presenter.get_car_by_model(model)
+
+    async def input_car(self):
+        make = input("input client make car")
+        model = input("input client model")
+        number = input("input client sts number car")
+        year = int(input("input car year"))
+        await self.presenter.add_car(make, model, year, number)
+
 
     # Repair
     async def get_all_repair(self):
@@ -68,7 +84,6 @@ class ConsoleUI(View):
         id = int(input("input client id"))
         await self.presenter.get_repair_by_client_id(id)
 
-
     async def get_repair_by_date(self):
         id = input("input date work repair")
         await self.presenter.get_repair_by_date(id)
@@ -76,5 +91,3 @@ class ConsoleUI(View):
     async def get_repair_by_status(self):
         state = input("input status repair car")
         await self.presenter.get_repair_by_status(state)
-
-

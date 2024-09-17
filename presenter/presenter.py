@@ -40,8 +40,8 @@ class Presenter:
     async def get_car_by_model(self, model: str):
         await self.__services.get_car_by_model(model)
 
-    async def add_car(self, brand: str, model: str, year: int, number: str) -> None:
-        await self.__services.add_car(brand, model, year, number)
+    async def add_car(self, make: str, model: str, year: int, number: str) -> None:
+        await self.__services.add_car(make, model, year, number)
 
     # Repair
     async def get_all_repair(self):
@@ -62,7 +62,7 @@ class Presenter:
     async def get_repair_by_status(self, state: str):
         await self.__services.get_repair_by_status(state)
 
-    #SupportCar
+    # SupportCar
     async def get_make_by_id(self, make_id: int):
         await self.__services.get_make_by_id(make_id)
 
@@ -83,4 +83,3 @@ class Presenter:
 
     async def get_all_make(self):
         await self.__services.get_all_make()
-
