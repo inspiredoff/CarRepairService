@@ -1,29 +1,32 @@
 from abc import ABC
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 @dataclass
 class OriginEntity(ABC):
-    id: int
+    __id: int|None  = None
 
 
+@dataclass
 class OriginEntityAddressees(OriginEntity, ABC):
     __phone_number: int
 
-
+@dataclass
 class OriginEntityClient(OriginEntity, ABC):
     __first_name: str
-    __last_name: str
-    __family_name: str
-    __phone_number: OriginEntityAddressees
+    __last_name: str|None
+    __family_name: str|None
+    __adressees: OriginEntityAddressees
+    __car: list[OriginEntity] = field(default_factory=list)
 
-
+@dataclass
 class OriginEntityCar(OriginEntity, ABC):
     __make: str
     __model: str
     __year: int
     __sts_number: str
     __client: OriginEntityClient
+
 
 
 class OriginEntityHistoryRepair(OriginEntity, ABC):
@@ -42,14 +45,8 @@ class OriginEntitySupportCar(OriginEntity, ABC):
 
 class Car(OriginEntityCar):
 
-    def __init__(self,id, make, model, year, sts_number, client_id):
-        super().__init__(id)
-        self.__id = id
-        self.__make = make
-        self.__model = model
-        self.__year = year
-        self.__sts_number = sts_number
-        self.__client_id = client_id
+    def __init__(self,make:str, model:str, year:int, sts_number:str, client:OriginEntityClient, id:int|None = None):
+        super().__init__(id, make, model, year, sts_number, client)
 
     @property
     async def make(self):
@@ -68,8 +65,8 @@ class Car(OriginEntityCar):
         return self.__sts_number
 
     @property
-    async def client_id(self):
-        return self.__client_id
+    async def client(self):
+        return self.__client
 
     @make.setter
     async def make(self, make):
@@ -87,17 +84,19 @@ class Car(OriginEntityCar):
     async def sts_number(self, sts_number):
         self.__sts_number = sts_number
 
-    @client_id.setter
-    async def client_id(self, client_id):
-        self.__client_id = client_id
+    @client.setter
+    async def client(self, client):
+        self.__client = client
 
 
 class Addressees(OriginEntityAddressees):
 
-    def __init__(self, id,phone_number):
-        super().__init__(id)
-        self.__id = id
-        self.__phone_number = phone_number
+    def __init__(self,phone_number, id = None):
+        super().__init__(id, phone_number)
+
+    @property
+    async def id(self):
+        return self.__id
 
     @property
     async def phone_number(self):
@@ -107,17 +106,26 @@ class Addressees(OriginEntityAddressees):
     async def phone_number(self, phone_number):
         self.__phone_number = phone_number
 
+    @id.setter
+    async def id(self, id):
+        self.__id = id
+
 
 class Client(OriginEntityClient):
 
-    def __init__(self, id, phone_number_id=None, first_name=None, family_name=None, last_name=None):
-        super().__init__(id)
-        self.__id = id
-        self.__phone_number_id = phone_number_id
-        self.__first_name = first_name
-        self.__last_name = last_name
-        self.__family_name = family_name
+    def __init__(self,
+                 first_name: str,
+                 addressees: OriginEntityAddressees,
+                 id:int|None = None,
+                 family_name:str|None=None,
+                 last_name:str|None=None,
+                 ):
 
+        super().__init__(id, first_name, last_name,  family_name, addressees)
+
+    @property
+    async def id(self):
+        return self.__id
     @property
     async def first_name(self):
         return self.__first_name
@@ -131,8 +139,16 @@ class Client(OriginEntityClient):
         return self.__family_name
 
     @property
-    async def phone_number_id(self):
-        return self.__phone_number_id
+    async def addressees(self):
+        return self.__adressees
+
+    @property
+    async def car(self):
+        return self.__car
+
+    @id.setter
+    async def id(self, id):
+        self.__id = id
 
     @first_name.setter
     async def first_name(self, first_name):
@@ -143,8 +159,16 @@ class Client(OriginEntityClient):
         self.__last_name = last_name
 
     @family_name.setter
-    def family_name(self, value):
-        self._family_name = value
+    async def family_name(self, family_name):
+        self._family_name = family_name
+
+    @addressees.setter
+    async def addressees(self, addressees):
+        self.__adressees = addressees
+
+    @car.setter
+    async def car(self, car):
+        self.__car.append(car)
 
 
 class HistoryCarRepair(OriginEntityHistoryRepair):

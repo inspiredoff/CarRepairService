@@ -2,15 +2,16 @@ from config import dsn
 from sqlalchemy.ext.asyncio import async_sessionmaker
 from sqlalchemy.ext.asyncio import create_async_engine
 
+from model.src.model.models import Addressees
+from model.src.model.models import Car
+from model.src.model.models import Client
+from model.src.model.models import HistoryCarRepair
+from model.src.model.models import SupportCar
 from model.src.repository.car_repository.car_repository import CarRepository
 from model.src.repository.client_repository.client_repository import ClientRepository
-from model.src.model.models import (
-    Car,
-    Client,
-    HistoryCarRepair,
-    SupportCar, Addressees
 
-)
+
+from
 from model.src.repository.repository import CarOriginRepository
 from model.src.repository.repository import CarsModelDatabase
 from model.src.repository.repository import ClientOriginRepository
@@ -55,13 +56,15 @@ class Services:
         print(client)
 
     async def add_client(self, first_name: str, family_name: str, last_name: str, phone_number: int) -> None:
-        client = Client()
-        client.first_name = first_name
-        client.family_name = family_name
-        client.last_name = last_name
-        address = Addressees()
-        address.phone_number = phone_number
-        await self.client_repository.add_entity(client, address)
+        addressees = Addressees(phone_number= phone_number)
+        client = Client(first_name=first_name, addressees= addressees, family_name= family_name, last_name=last_name)
+        list_id = await self.client_repository.add_entity(client, addressees)
+        for id in list_id:
+            if id.keys() == type(addressees):
+                addressees.id(id.get(type(addressees)))
+            if id.keys() == type(client):
+                client.id = id.get(type(client))
+
 
     # Car
 
@@ -126,6 +129,4 @@ class Services:
 
     async def get_all_make(self):
         await self.support_car_repository.get_all_make()
-
-
 
