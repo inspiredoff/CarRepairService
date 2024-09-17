@@ -9,14 +9,13 @@ from model.src.model.models import HistoryCarRepair
 from model.src.model.models import SupportCar
 from model.src.repository.car_repository.car_repository import CarRepository
 from model.src.repository.client_repository.client_repository import ClientRepository
-
-
-from
+from model.src.repository.models.models import CarsTable, ClientTable, AddresseesTable
 from model.src.repository.repository import CarOriginRepository
 from model.src.repository.repository import CarsModelDatabase
 from model.src.repository.repository import ClientOriginRepository
 from model.src.repository.repository import RepairOriginRepository
 from model.src.repository.support_car_reposytory.support_car_repository import SupportCarRepository
+from model.src.utils.outpututils import OutputUtils
 
 
 class Services:
@@ -29,42 +28,60 @@ class Services:
     def __init__(self):
         async_engine = create_async_engine(url=dsn, echo=True)
         self.__async_session_factory = async_sessionmaker(async_engine)
-        self.client_repository = ClientRepository(Client(), self.__async_session_factory)
-        self.car_repository = CarRepository(Car(), self.__async_session_factory)
+        self.client_repository = ClientRepository(ClientTable(), self.__async_session_factory)
+        self.car_repository = CarRepository(CarsTable(), self.__async_session_factory)
         self.support_car_repository = SupportCarRepository(self.__async_session_factory)
 
     # Client
 
-    async def get_all_client(self):
+    async def get_all_clients(self):
         clients = await self.client_repository.get_all_entities()
-        print(clients)
+        client_model = await self.__model_into_table_model(clients)
+        await OutputUtils.print_entity_ms(client_model)
+
 
     async def get_client_by_id(self, id: int):
         client = await self.client_repository.get_entity_by_id(id)
-        print(client)
+        client_model = await self.__model_into_table_model(client)
+        await OutputUtils.print_entity_ms(client_model)
 
-    async def get_client_by_first_name(self, first_name: str):
+
+    async def get_clients_by_first_name(self, first_name: str):
         client = await self.client_repository.get_entity_by_first_name(first_name)
-        print(client)
+        client_model = await self.__model_into_table_model(client)
+        await OutputUtils.print_entity_ms(client_model)
 
-    async def get_client_by_family_name(self, family_name: str):
+    async def get_clients_by_family_name(self, family_name: str):
         client = await self.client_repository.get_entity_by_family_name(family_name)
-        print(client)
+        client_model = await self.__model_into_table_model(client)
+        await OutputUtils.print_entity_ms(client_model)
 
-    async def get_client_by_last_name(self, last_name: str):
+    async def get_clients_by_last_name(self, last_name: str):
         client = await self.client_repository.get_entity_by_last_name(last_name)
-        print(client)
+        client_model = await self.__model_into_table_model(client)
+        await OutputUtils.print_entity_ms(client_model)
 
     async def add_client(self, first_name: str, family_name: str, last_name: str, phone_number: int) -> None:
-        addressees = Addressees(phone_number= phone_number)
-        client = Client(first_name=first_name, addressees= addressees, family_name= family_name, last_name=last_name)
-        list_id = await self.client_repository.add_entity(client, addressees)
-        for id in list_id:
-            if id.keys() == type(addressees):
-                addressees.id(id.get(type(addressees)))
-            if id.keys() == type(client):
-                client.id = id.get(type(client))
+        addressees = AddresseesTable()
+        addressees.phone_number = phone_number
+        client = ClientTable()
+        client.first_name = first_name
+        client.family_name = family_name
+        client.last_name = last_name
+        client.addressees = addressees
+        await self.client_repository.add_entity(client, addressees)
+        client_model = await self.__model_into_table_model(client)
+        await OutputUtils.print_entity_ms(client_model)
 
+    async def __model_into_table_model(self, client):
+        client_model = Client(
+            first_name=client.first_name,
+            addressees=client.addresses,
+            family_name=client.family_name,
+            last_name=client.last_name,
+            id=client.id
+        )
+        return client_model
 
     # Car
 

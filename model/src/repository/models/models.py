@@ -15,7 +15,7 @@ class ClientTable(AbstractBase):
     first_name: Mapped[str]
     last_name: Mapped[str]
     family_name: Mapped[str]
-    phone_number: Mapped[int] = mapped_column(ForeignKey("Addressees.phone_number"))
+    addresses: Mapped[int] = mapped_column(ForeignKey("Addressees.phone_number"))
     car_id: Mapped[int] = mapped_column(ForeignKey("Car.id"))
 
 

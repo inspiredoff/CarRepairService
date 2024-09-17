@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
 # from model.src.models.entity import Entity
-from model.src.repository.models.models import AbstractBase
+from model.src.repository.models.models import AbstractBase, ClientTable, AddresseesTable
 from model.src.model.models import (
     OriginEntity,
     OriginEntityCar,
@@ -66,19 +66,19 @@ class CarOriginRepository(OriginRepository):
 class ClientOriginRepository(OriginRepository):
 
     @abstractmethod
-    async def get_entity_by_first_name(self, first_name: str) -> OriginEntityClient:
+    async def get_entity_by_first_name(self, first_name: str) -> ClientTable:
         pass
 
     @abstractmethod
-    async def get_entity_by_family_name(self, family_name: str) -> OriginEntityClient:
+    async def get_entity_by_family_name(self, family_name: str) -> ClientTable:
         pass
 
     @abstractmethod
-    async def get_entity_by_last_name(self, last_name: str) -> OriginEntityClient:
+    async def get_entity_by_last_name(self, last_name: str) -> ClientTable:
         pass
 
     @abstractmethod
-    async def add_entity(self, client: OriginEntityClient, address: Or) -> None:
+    async def add_entity(self, client: ClientTable, address: AddresseesTable) -> None:
         pass
 
 

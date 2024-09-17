@@ -17,11 +17,10 @@ class RepositoryUtils:
             res = await session.execute(query)
         return extract_method(res.scalars())
 
-    async def add_entity(self, entities: list[OriginEntity]) -> list[int]:
+    async def add_entity(self, entities: list[AbstractBase]) -> list[int]:
         list_ids = []
         async with self.__async_session() as session:
             for entity in entities:
                 session.add(entity)
-                list_ids.append(entity.id)
             await session.commit()
         return list_ids
